@@ -175,7 +175,59 @@ print('LogisticRegression 정확도 : {0:.4f}'.format(accuracy_score(y_test, lr_
 # %%
 from sklearn.model_selection import KFold
 
-def exec_kfold(clf, fold =5):
+def exec_kfold(clf, folds =5):
     kfold = KFold(n_splits=folds)
     scores = []
 
+    # KFold 교차 검증 수행
+    for iter_count, (train_index, test_index) in enumerate(kfold.split(x_titanic_df)):
+        # X_titanic_df 데이터에서 교차 검증별로 학습과 검증 데이터를 가리키는 index 생성
+
+        x_train, x_test = x_titanic_df.values[train_index], x_titanic_df.values[test_index]
+        y_train, y_test = y_titanic_df.values[train_index], y_titanic_df.values[test_index]
+
+        #classifier 학습, 예측, 정확도 계산
+        clf.fit(x_train, y_train)
+        predictions = clf.predict(x_test)
+        accuracy = accuracy_score(y_test, predictions)
+        scores.append(accuracy)
+        print("교차 검증 {0} 정확도 : {1:.4f}".format(iter_count,accuracy))
+
+    mean_score = np.mean(scores)
+    print("평균 정확도: {0:.4f}".format(mean_score))
+
+#%%    
+exec_kfold(dt_clf, folds=5)
+
+
+# %%
+from sklearn.model_selection import cross_val_score
+
+#%%
+scores = cross_val_score(dt_clf, x_titanic_df, y_titanic_df, cv=5)
+
+#%%
+for iter_count, accuracy in enumerate(scores):
+        print("교차 검증 {0} 정확도 : {1:.4f}".format(iter_count,accuracy))
+
+print("평균 정확도: {0:.4f}".format(np.mean(scores)))
+
+#%%
+from sklearn.model_selection import GridSearchCV
+
+#%%
+
+parameters = {'max_depth':[2,3,5,10],
+              'min_samples_split':[2,3,5], 'min_samples_leaf':[1,5,8]}
+
+grid_dclf = GridSearchCV(dt_clf, param_grid=parameters, scoring='accuracy', cv=5)
+grid_dclf.fit(x_train, y_train)
+
+print('GridSearchCV 최적 하이퍼 파라미터 :', grid_dclf.best_params_)
+print('GridSearchCV 최고 정확도: {0:.4f}'.format(grid_dclf.best_score_))
+best_dclf = grid_dclf.best_estimator_
+
+# GridSearchCV의 최적 하이퍼 파라미터로 학습된 Estimator로 예측 및 평가 수행
+dpredictions = best_dclf.predict(x_test)
+accuracy = accuracy_score(y_test, dpredictions)
+print('테스트 세트에서의 decisionTreeClassifier 정확도 : {0:.4f}'.format(accuracy))
