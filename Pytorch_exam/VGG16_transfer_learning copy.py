@@ -12,7 +12,7 @@ import torch.nn as nn
 import torch.optim as optim
 
 from torch.optim import lr_scheduler
-from torch.autograd import Variable
+from torch.autograd import variable
 
 import numpy as np
 import torchvision
@@ -22,6 +22,71 @@ import matplotlib.pyplot as plt
 import time
 import os
 import copy
+
+plt.ion()
+
+use_gpu = torch.cuda.is_available()
+
+#%%
+if use_gpu:
+    print("Using CUDA")
+
+
+# %%
+file_path = '../../data/17839_23942_bundle_archive/oct2017/OCT2017_'
+TRAIN = 'train'
+VAL =  'val'
+TEST = 'test'
+#%%
+
+# VGG-16 Takes 224x224 images as input, so we resize all of them
+data_transforms = {
+    TRAIN: transforms.Compose([
+        # Data augmentation is a good practice for the train set
+        # Here, we randomly crop the image to 224x224 and
+        # randomly flip it horizontally. 
+       transforms.RandomResizedCrop(224),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+    ]),
+    VAL: transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+    ]),
+    TEST: transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+    ])
+}
+
+image_datasets ={
+    x: datasets.ImageFolder(
+        os.path.join(file_path,x),
+        transform= data_transforms[x]
+    )
+    for x in [TRAIN, VAL, TEST]
+}
+
+dataloaders = {
+    x: torch.utils.data.DataLoader(
+        image_datasets[x], batch_size=2,
+        shuffle=True, num_workers=4
+    )
+    for x in [TRAIN, VAL, TEST]
+}
+
+datasets_sizes = {x: len(image_datasets[x]) for x in [TRAIN, VAL, TEST]}
+
+for x in [TRAIN, VAL, TEST]:
+    print("Loaded {} images under {}".format(datasets_sizes[x],x))
+
+print("classes: ")
+class_names = image_datasets[TRAIN].classes
+print(image_datasets[TRAIN].classes)
+
+# %%
 
 def imshow(inp, title=None):
     inp = inp.numpy().transpose((1,2,0))
@@ -38,6 +103,10 @@ def show_databatch(inputs, classes):
     imshow(out, title=[class_names[x] for x in classes])
 
 #%%
+# batch of training data
+inputs, classes = next(iter(dataloaders[TRAIN]))
+#%%
+show_databatch(inputs, classes)
 
 # %%
 
@@ -124,6 +193,48 @@ def eval_model(vgg, criterion):
     print("Avg acc (test): {:.4f}".format(avg_acc))
     print('-' * 10)
 
+# %%
+
+vgg16 = models.vgg16_bn()
+vgg16.load_state_dict(torch.load("../../model/vgg16_bn-6c64b313.pth"))
+print(vgg16.classifier[6].out_features)
+
+# %%
+for param in vgg16.features.parameters():
+    param.requires_grad = False
+
+num_features = vgg16.classifier[6].in_features
+print("num_features : ", num_features)
+features = list(vgg16.classifier.children())[:-1]
+features.extend([nn.Linear(num_features, len(class_names))])
+
+vgg16.classifier = nn.Sequential(*features)
+print(vgg16)
+
+# %%
+resume_training = False
+
+if resume_training:
+    print("Loading pretrained model..")
+    vgg16.load_state_dict(torch.load('../input/vgg16-transfer-learning-pytorch/VGG'))
+    print("Loaded")
+
+if use_gpu:
+    #.cuda() will move everything to the GPU side
+    vgg16.cuda()
+    print("CUDA")
+
+criterion = nn.CrossEntropyLoss()
+
+optimizer_ft = optim.SGD(vgg16.parameters(), lr=0.001, momentum=0.9)
+exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
+
+# %%
+print("Test before training")
+eval_model(vgg16, criterion)
+
+#%%
+visualize_model(vgg16) #test before training
 
 # %%
 def train_model(vgg, criterion, optimizer, scheduler, num_epochs=10):
@@ -237,131 +348,16 @@ def train_model(vgg, criterion, optimizer, scheduler, num_epochs=10):
     vgg.load_state_dict(best_model_wts)
     return vgg
 
+# %%
+vgg16 = train_model(vgg16, criterion, optimizer_ft, exp_lr_scheduler, num_epochs=2)
+torch.save(vgg16.state_dict(), 'VGG16_v2-OCT_Retina_half_dataset.pt')
+
+#%%
+eval_model(vgg16, criterion)
+
+#%%
+visualize_model(vgg16, num_images=32)
+
 
 # %%
 if __name__ == '__main__':
-
-        
-    plt.ion()
-
-    use_gpu = torch.cuda.is_available()
-
-    #%%
-    if use_gpu:
-        print("Using CUDA")
-
-
-    # %%
-    file_path = '../../data/17839_23942_bundle_archive/oct2017/OCT2017_'
-    TRAIN = 'train'
-    VAL =  'val'
-    TEST = 'test'
-    #%%
-
-    # VGG-16 Takes 224x224 images as input, so we resize all of them
-    data_transforms = {
-        TRAIN: transforms.Compose([
-            # Data augmentation is a good practice for the train set
-            # Here, we randomly crop the image to 224x224 and
-            # randomly flip it horizontally. 
-        transforms.RandomResizedCrop(224),
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),
-        ]),
-        VAL: transforms.Compose([
-            transforms.Resize(256),
-            transforms.CenterCrop(224),
-            transforms.ToTensor(),
-        ]),
-        TEST: transforms.Compose([
-            transforms.Resize(256),
-            transforms.CenterCrop(224),
-            transforms.ToTensor(),
-        ])
-    }
-
-    image_datasets ={
-        x: datasets.ImageFolder(
-            os.path.join(file_path,x),
-            transform= data_transforms[x]
-        )
-        for x in [TRAIN, VAL, TEST]
-    }
-
-    dataloaders = {
-        x: torch.utils.data.DataLoader(
-            image_datasets[x], batch_size=2,
-            shuffle=True, num_workers=4
-        )
-        for x in [TRAIN, VAL, TEST]
-    }
-
-    datasets_sizes = {x: len(image_datasets[x]) for x in [TRAIN, VAL, TEST]}
-
-    for x in [TRAIN, VAL, TEST]:
-        print("Loaded {} images under {}".format(datasets_sizes[x],x))
-
-    print("classes: ")
-    class_names = image_datasets[TRAIN].classes
-    print(image_datasets[TRAIN].classes)
-
-    # %%
-    # batch of training data
-    inputs, classes = next(iter(dataloaders[TRAIN]))
-    #%%
-    show_databatch(inputs, classes)
-
-    # %%
-    
-    model_file_path = 'D:/Chameleon/pytorch/연습/pytorch_exam/model/vgg16_bn-6c64b313.pth'
-    print(os.path.isfile(model_file_path))
-    vgg16 = models.vgg16_bn()
-    vgg16.load_state_dict(torch.load(model_file_path))
-    print(vgg16.classifier[6].out_features)
-
-    # %%
-    for param in vgg16.features.parameters():
-        param.requires_grad = False
-
-    num_features = vgg16.classifier[6].in_features
-    print("num_features : ", num_features)
-    features = list(vgg16.classifier.children())[:-1]
-    features.extend([nn.Linear(num_features, len(class_names))])
-
-    vgg16.classifier = nn.Sequential(*features)
-    print(vgg16)
-
-    # %%
-    resume_training = False
-
-    if resume_training:
-        print("Loading pretrained model..")
-        vgg16.load_state_dict(torch.load('../input/vgg16-transfer-learning-pytorch/VGG'))
-        print("Loaded")
-
-    if use_gpu:
-        #.cuda() will move everything to the GPU side
-        vgg16.cuda()
-        print("CUDA")
-
-    criterion = nn.CrossEntropyLoss()
-
-    optimizer_ft = optim.SGD(vgg16.parameters(), lr=0.001, momentum=0.9)
-    exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
-
-    # %%
-    print("Test before training")
-    eval_model(vgg16, criterion)
-
-    #%%
-    visualize_model(vgg16) #test before training
-    # %%
-    vgg16 = train_model(vgg16, criterion, optimizer_ft, exp_lr_scheduler, num_epochs=2)
-    torch.save(vgg16.state_dict(), 'VGG16_v2-OCT_Retina_half_dataset.pt')
-
-    #%%
-    eval_model(vgg16, criterion)
-
-    #%%
-    visualize_model(vgg16, num_images=32)
-
