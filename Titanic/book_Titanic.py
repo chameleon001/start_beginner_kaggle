@@ -231,3 +231,6 @@ best_dclf = grid_dclf.best_estimator_
 dpredictions = best_dclf.predict(x_test)
 accuracy = accuracy_score(y_test, dpredictions)
 print('테스트 세트에서의 decisionTreeClassifier 정확도 : {0:.4f}'.format(accuracy))
+
+
+# %%
