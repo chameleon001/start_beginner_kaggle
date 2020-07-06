@@ -1,0 +1,5 @@
+
+*.pth
+.vscode/settings.json
+*.json
+*.json
