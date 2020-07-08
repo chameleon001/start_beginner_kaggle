@@ -3,9 +3,11 @@
 from sklearn.base import BaseEstimator
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
 from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix
+from sklearn.preprocessing import LabelEncoder
+import numpy as np
 # %%
 class MyDummyClassifier(BaseEstimator):
     # fit() 메서드는 아무것도 학습하지 않음.
@@ -23,7 +25,37 @@ class MyDummyClassifier(BaseEstimator):
                 pred[i] = 1
         
         return pred
+#%%
 
+## Null 처리 함수
+def fillna(df):
+    df['Age'].fillna(df['Age'].mean(), inplace=True)
+    df['Cabin'].fillna('N', inplace=True)
+    df['Embarked'].fillna('N', inplace=True)
+    df['Fare'].fillna(0, inplace=True)
+    return df
+
+## 머신러닝에 불필요한 피처 제거
+def drop_features(df):
+    df.drop(['PassengerId', 'Name', 'Ticket'], axis=1, inplace=True)
+    return df
+
+## Label Encoding 수행
+def format_features(df):
+    df['Cabin'] = df['Cabin'].str[:1]
+    features = ['Cabin', 'Sex', 'Embarked']
+    for feature in features:
+        le = LabelEncoder()
+        le.fit(df[feature])
+        df[feature] = le.transform(df[feature])
+    return df
+
+#%%
+def transform_features(df):
+    df = fillna(df)
+    df = drop_features(df)
+    df = format_features(df)
+    return df
 #%%
 Data_file_path='../../DataSet/titanic/'
 titanic_df = pd.read_csv(Data_file_path+'train.csv')
@@ -69,6 +101,13 @@ lr_clf = LogisticRegression()
 lr_clf.fit(x_train, y_train)
 pred = lr_clf.predict(x_test)
 get_clf_eval(y_test,pred)
+
+
+# %%
+pred_proba = lr_clf.predict_proba(x_test)
+pred = lr_clf.predict(x_test)
+print('pred_proba() 결과 Shape : {0}'.format(pred_proba.shape))
+print('pred_proba array에서 앞 3개만 샘플로 추출 \n :',pred_proba[:3])
 
 
 # %%
