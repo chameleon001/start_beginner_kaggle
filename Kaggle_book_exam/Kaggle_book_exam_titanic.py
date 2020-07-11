@@ -112,5 +112,7 @@ print('pred_proba array에서 앞 3개만 샘플로 추출 \n :',pred_proba[:3])
 
 # %%
 
-읽어보기
+#읽어보기
 # https://www.kaggle.com/c/osic-pulmonary-fibrosis-progression/discussion/165253
+
+#%%
