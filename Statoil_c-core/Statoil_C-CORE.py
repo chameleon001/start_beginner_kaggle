@@ -3,6 +3,7 @@
 
 # Statoil/C-CORE 필사 커널
 # https://kaggle-kr.tistory.com/19?category=868316
+# https://www.kaggle.com/c/statoil-iceberg-classifier-challenge/data
 
 # D:\GitHub\kaggle_dataset\statoil-iceberg-classifier-challenge\data\processed
 
@@ -27,8 +28,11 @@ from plotly import tools
 py.init_notebook_mode(connected=True)
 
 # %%
-data_path = "D:\GitHub\kaggle_dataset\statoil-iceberg-classifier-challenge\data\processed"
 
+#home
+# data_path = "D:\GitHub\kaggle_dataset\statoil-iceberg-classifier-challenge\data\processed"
+#company
+data_path = "D:\Chameleon\pytorch\data\statoil-iceberg-classifier-challenge\data\processed"
 train = pd.read_json(data_path + "/train.json")
 test = pd.read_json(data_path + "/test.json")
 train.head()
