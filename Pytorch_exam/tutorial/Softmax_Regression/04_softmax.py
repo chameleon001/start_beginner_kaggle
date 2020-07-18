@@ -27,3 +27,16 @@ print(x_train.shape)
 print(y_train.shape)
 
 # %%
+
+y_one_hot = torch.zeros(8,3)
+y_one_hot.scatter_(1, y_train.unsqueeze(1), 1)
+print(y_one_hot.shape)
+
+# %%
+W = torch.zeros((4,3), requires_grad=True)
+b = torch.zeros(1, requires_grad=True)
+
+# %%
+optimizer = optim.SGD([W,b], lr=0.1)
+
+# %%
