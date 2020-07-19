@@ -8,3 +8,9 @@
 .vscode/settings.json
 .vscode/settings.json
 *.json
+Pytorch_exam/tutorial/Softmax_Regression/MNIST_data/MNIST/raw/t10k-labels-idx1-ubyte
+*.gz
+Pytorch_exam/tutorial/Softmax_Regression/MNIST_data/MNIST/raw/train-labels-idx1-ubyte
+Pytorch_exam/tutorial/Softmax_Regression/MNIST_data/MNIST/raw/train-images-idx3-ubyte
+Pytorch_exam/tutorial/Softmax_Regression/MNIST_data/MNIST/raw/t10k-images-idx3-ubyte
+*.pt
