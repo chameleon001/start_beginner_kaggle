@@ -40,3 +40,23 @@ b = torch.zeros(1, requires_grad=True)
 optimizer = optim.SGD([W,b], lr=0.1)
 
 # %%
+
+nb_epochs = 1000
+for epoch in range(nb_epochs +1):
+    hypothesis = F.softmax(x_train.matmul(W) + b, dim=1)
+
+    cost = (y_one_hot * -torch.log(hypothesis)).sum(dim=1).mean()
+
+        # cost로 H(x) 개선
+    optimizer.zero_grad()
+    cost.backward()
+    optimizer.step()
+
+    # 100번마다 로그 출력
+    if epoch % 100 == 0:
+        print('Epoch {:4d}/{} Cost: {:.6f}'.format(
+            epoch, nb_epochs, cost.item()
+        ))
+
+
+# %%
