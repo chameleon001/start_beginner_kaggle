@@ -15,7 +15,7 @@ import random
 
 # %%
 USE_CUDA = torch.cuda.is_available()
-device = torch.device("cuda:0" if USE_CUDA else "cpu")
+device = torch.device("cpu" if "cpu" else "cpu")
 
 print(device)
 
@@ -23,7 +23,7 @@ print(device)
 # for reproducibility
 random.seed(777)
 torch.manual_seed(777)
-if device == 'cuda':
+if device == 'cpu':
     torch.cuda.manual_seed_all(777)
 
 # %%
@@ -101,4 +101,16 @@ with torch.no_grad():
     prediction = linear(X_test)
     correct_prediction = torch.argmax(prediction, 1) == Y_test
     accuracy = correct_prediction.float().mean()
-        print('Accuracy:', accuracy.item())
+    print('Accuracy:', accuracy.item())
+
+    # MNIST 테스트 데이터에서 무작위로 하나를 뽑아서 예측을 해본다
+    r = random.randint(0, len(mnist_test) - 1)
+    X_single_data = mnist_test.test_data[r:r + 1].view(-1, 28 * 28).float().to(device)
+    Y_single_data = mnist_test.test_labels[r:r + 1].to(device)
+
+    print('Label: ', Y_single_data.item())
+    single_prediction = linear(X_single_data)
+    print('Prediction: ', torch.argmax(single_prediction, 1).item())
+
+    plt.imshow(mnist_test.test_data[r:r + 1].view(28, 28), cmap='Greys', interpolation='nearest')
+    plt.show()
