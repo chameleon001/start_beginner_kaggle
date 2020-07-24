@@ -14,3 +14,4 @@ Pytorch_exam/tutorial/Softmax_Regression/MNIST_data/MNIST/raw/train-labels-idx1-
 Pytorch_exam/tutorial/Softmax_Regression/MNIST_data/MNIST/raw/train-images-idx3-ubyte
 Pytorch_exam/tutorial/Softmax_Regression/MNIST_data/MNIST/raw/t10k-images-idx3-ubyte
 *.pt
+.vscode/settings.json
