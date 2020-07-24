@@ -10,3 +10,4 @@
 https://www.kaggle.com/kanncaa1/data-sciencetutorial-for-beginners
 
 https://www.kaggle.com/kanncaa1/machine-learning-tutorial-for-beginners
+https://www.kaggle.com/kanncaa1/deep-learning-tutorial-for-beginners
