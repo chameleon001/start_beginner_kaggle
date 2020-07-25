@@ -5,12 +5,12 @@
 2. house?
 
 
-?•„?‚¬&ë²ˆì—­ ?˜ˆ? •
+í•„ì‚¬ ì˜ˆì •
 
 https://www.kaggle.com/kanncaa1/data-sciencetutorial-for-beginners
 
 https://www.kaggle.com/kanncaa1/machine-learning-tutorial-for-beginners
 https://www.kaggle.com/kanncaa1/deep-learning-tutorial-for-beginners
 
-//°øºÎÇÒ°Í
+//ê³µë¶€ ì»¤ë¦¬í˜ëŸ¼ ë”°ë¼ê°€ê¸°
 https://kaggle-kr.tistory.com/32
