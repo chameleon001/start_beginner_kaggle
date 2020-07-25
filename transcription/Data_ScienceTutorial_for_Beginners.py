@@ -228,7 +228,74 @@ plt.show()
 # %%
 
 '''
-DICTIONARY
+DICTIONARY      *역자 : python의 자료형 중 하나입니다.
     왜 우리가 dictionary가 필요한가?
+        - 'Key' 와 'Value'를 갖는다.
+        - lists 보다 빠르다.
+        - key와 value가 무엇인가. ex) dictionary = {'spain' :'madrid'}
+          key는 'spain' , values는 'madrid' 이다.
+    
+        Dictionary는 쉽다.
+        keys (), values ​​(), update, add, check, remove key 등을 연습해보자.
     
 '''
+#%%
+
+# Dictionary를 만들고, Key와 Values를 확인해보자.
+
+dictionary = {'spain' : 'madrid', 'usa' : 'vegas'}
+print(dictionary.keys())
+print(dictionary.values())
+
+# %%
+
+
+# Key는 string, boolean, float, integer, tubles와 같은 불변의 객체이어야 한다. 
+#   *역자 : Dictionary의 key는 값을 변경할 수 없는. Immutable 타입이어야하며, Value는 Immutable과 mutable 모두 가능하다.
+#   *       key로 문자열이나 tuble은 사용될 수 있으나 list는 key로 사용될 수는 없다.
+# List는 불변하지 않다.
+# Keys는 특별해야한다.(고유한 값이다.)
+dictionary['spain'] = "barcelona"    # update existing entry
+print(dictionary)
+dictionary['france'] = "paris"       # Add new entry
+print(dictionary)
+del dictionary['spain']              # remove entry with key 'spain'
+print(dictionary)
+print('france' in dictionary)        # check include or not
+dictionary.clear()                   # remove all entries in dict
+print(dictionary)
+
+# %%
+'''
+PANDAS
+    pandas에 대해 알아야 할 것은 무엇인가?
+        -CSV : comma -구분된 값   *역자 : comma(,)로 구분되어진 값 ex) A,B,C
+'''
+
+#data = pd.read_csv('../input/pokemon.csv')
+data = pd.read_csv(file_path+'/pokemon.csv')
+
+series = data['Defense']        # data['Defense'] = series
+print(type(series))
+data_frame = data[['Defense']]  # data[['Defense']] = data frame
+print(type(data_frame))
+# %%
+'''
+pandas를 계속하기 전에, 논리(Logic), 제어 흐름(control flow), 필터링(filtering)을 배워야 한다.
+비교 연산자 : ==, <, >, <=
+Boolean 연산자: and, or ,not
+Filtering pandas
+'''
+# 비교 연산자
+print(3>2)
+print(3!=2)
+# Boolean 연산자
+print(True and False)
+print(True or False)
+
+# 1 - Filtering Pandas data frame
+x = data['Defense']>200    # 방어력이 200보다 높은 포켓몬은 3마리 입니다.
+data[x]
+
+# 2 - F
+# %%
