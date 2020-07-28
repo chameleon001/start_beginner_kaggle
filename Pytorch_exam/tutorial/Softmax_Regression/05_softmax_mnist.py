@@ -114,3 +114,5 @@ with torch.no_grad():
 
     plt.imshow(mnist_test.test_data[r:r + 1].view(28, 28), cmap='Greys', interpolation='nearest')
     plt.show()
+
+# %%
