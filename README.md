@@ -5,12 +5,14 @@
 2. house?
 
 
-필사 예정
+-필사 예정
 
 https://www.kaggle.com/kanncaa1/data-sciencetutorial-for-beginners
-
 https://www.kaggle.com/kanncaa1/machine-learning-tutorial-for-beginners
 https://www.kaggle.com/kanncaa1/deep-learning-tutorial-for-beginners
 
 //공부 커리큘럼 따라가기
 https://kaggle-kr.tistory.com/32
+
+
+- plot,pandas 공부하기
