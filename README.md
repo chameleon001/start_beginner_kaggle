@@ -16,3 +16,5 @@ https://kaggle-kr.tistory.com/32
 
 
 - plot,pandas 공부하기
+
+-레포 정리하기.
