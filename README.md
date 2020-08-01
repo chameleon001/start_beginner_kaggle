@@ -14,7 +14,8 @@ https://www.kaggle.com/kanncaa1/deep-learning-tutorial-for-beginners
 //공부 커리큘럼 따라가기
 https://kaggle-kr.tistory.com/32
 
-
+todo
 - plot,pandas 공부하기
 
 -레포 정리하기.
+-
