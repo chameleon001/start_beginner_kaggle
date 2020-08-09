@@ -6,7 +6,7 @@
 
 
 -필사 예정
-Seaborn까지 완료
+Seaborn까지 완료-
 https://www.kaggle.com/kanncaa1/data-sciencetutorial-for-beginners
 https://www.kaggle.com/kanncaa1/machine-learning-tutorial-for-beginners
 https://www.kaggle.com/kanncaa1/deep-learning-tutorial-for-beginners
