@@ -18,5 +18,6 @@ todo
 - plot,pandas 공부하기
 
 -레포 정리하기.
--
-ㅇㅓㄴㅗㅁㅏㄹㄹㅣㄷㅣㅌㅔㄱ
+
+
+-anomaly detection
