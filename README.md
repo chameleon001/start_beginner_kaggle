@@ -2,7 +2,7 @@
 
 
 1. Titanic
-2. house?
+
 
 
 -필사 예정
