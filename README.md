@@ -22,3 +22,4 @@ todo
 
 -anomaly detection
 mvtech
+gan vae
