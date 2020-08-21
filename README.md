@@ -22,4 +22,4 @@ todo
 
 -anomaly detection
 mvtech
-gan vae style lstm
+gan vae style lstm+yolo
