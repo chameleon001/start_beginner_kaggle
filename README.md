@@ -23,3 +23,4 @@ todo
 -anomaly detection
 mvtech
 gan vae style lstm+yolo
+19~22ㅅㅣㄱㅈㅜㅇㄷㅗㄱ
