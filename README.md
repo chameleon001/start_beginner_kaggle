@@ -24,3 +24,4 @@ todo
 mvtech
 gan vae style lstm+yolo
 19~22ㅅㅣㄱㅈㅜㅇㄷㅗㄱ
+24 ㅊㅜㄹㄱㅡㄴ
