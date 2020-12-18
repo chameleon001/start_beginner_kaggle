@@ -11,6 +11,8 @@ https://www.kaggle.com/kanncaa1/data-sciencetutorial-for-beginners
 https://www.kaggle.com/kanncaa1/machine-learning-tutorial-for-beginners
 https://www.kaggle.com/kanncaa1/deep-learning-tutorial-for-beginners
 
+2020 12 18  필사 다시 시작
+
 //공부 커리큘럼 따라가기
 https://kaggle-kr.tistory.com/32
 
